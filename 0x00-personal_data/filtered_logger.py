@@ -14,13 +14,13 @@ PII_FIELDS = ("name", "email", "password", "ssn", "phone")
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    db_connect = mysql.connector.connect(
-        user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
-        password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
-        host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
-        database=os.getenv('PERSONAL_DATA_DB_NAME')
-    )
-    return db_connect
+    """ Returns a connection object """
+    MY_USER = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    MY_PASSWORD = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    MY_HOST = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    MY_DB = os.getenv('PERSONAL_DATA_DB_NAME')
+    return mysql.connector.connect(user=MY_USER, password=MY_PASSWORD,
+                                   host=MY_HOST, database=MY_DB, port=3306)
 
 
 def filter_datum(fields: List[str], redaction: str,
