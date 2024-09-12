@@ -6,9 +6,21 @@ Filtered logger
 import re
 from typing import List
 import logging
+from mysql.connector import connection
+import os
 
 
 PII_FIELDS = ("name", "email", "password", "ssn", "phone")
+
+
+def get_db() -> connection.MySQLConnection:
+    """ Returns a connection object """
+    MY_USER = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    MY_PASSWORD = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    MY_HOST = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    MY_DB = os.getenv('PERSONAL_DATA_DB_NAME')
+    return connection.MySQLConnection(user=MY_USER, password=MY_PASSWORD,
+                                      host=MY_HOST, database=MY_DB)
 
 
 def filter_datum(fields: List[str], redaction: str,
