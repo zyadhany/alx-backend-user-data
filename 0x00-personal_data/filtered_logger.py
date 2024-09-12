@@ -20,7 +20,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     MY_HOST = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     MY_DB = os.getenv('PERSONAL_DATA_DB_NAME')
     return mysql.connector.connect(user=MY_USER, password=MY_PASSWORD,
-                                   host=MY_HOST, database=MY_DB, port=3306)
+                                   host=MY_HOST, database=MY_DB)
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -63,3 +63,25 @@ def get_logger() -> logging.Logger:
 
     logger.addHandler(stream)
     return logger
+
+
+def main() -> None:
+    """ Connects to the database and retrieves a row """
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    logger = get_logger()
+    field_names = [i[0] for i in cursor.description]
+
+    logger = get_logger()
+
+    for row in cursor:
+        str_row = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, field_names))
+        logger.info(str_row.strip())
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
