@@ -18,6 +18,7 @@ if os.getenv('AUTH_TYPE') == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
 
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
@@ -39,7 +40,9 @@ def unauthorized(error) -> str:
     return jsonify({"error": "Unauthorized"}), 401
 
 
-forbid_list = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+forbid_list = ['/api/v1/status/', '/api/v1/unauthorized/',
+               '/api/v1/forbidden/']
+
 
 @app.before_request
 def before_request() -> str:
