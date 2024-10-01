@@ -43,6 +43,16 @@ def login() -> str:
     return jsonify({"message": "wrong password"}), 401
 
 
+@app.route("/sessions", methods=["DELETE"])
+def logout() -> str:
+    """
+    DELETE /sessions
+    """
+    session_id = request.cookies.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
+    AUTH.destroy_session(user.id)
+
+
 @app.route("/", methods=["GET"], strict_slashes=False)
 def index() -> str:
     """
