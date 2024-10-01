@@ -4,7 +4,7 @@ Main file
 """
 
 import flask
-from flask import jsonify, request, redirect
+from flask import jsonify, request, redirect, abort
 from auth import Auth
 
 
@@ -54,7 +54,7 @@ def logout() -> str:
         AUTH.destroy_session(user.id)
         return redirect("/")
     except Exception:
-        return jsonify({"message": "no user logged in"}), 403
+        abort(403)
 
 
 @app.route("/", methods=["GET"], strict_slashes=False)
