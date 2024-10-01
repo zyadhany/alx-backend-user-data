@@ -52,6 +52,7 @@ def logout() -> str:
     if not user:
         abort(403)
     AUTH.destroy_session(user.id)
+    request.cookies.pop("session_id")
     return redirect("/")
 
 
