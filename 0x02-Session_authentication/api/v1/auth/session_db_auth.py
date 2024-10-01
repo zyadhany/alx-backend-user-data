@@ -34,7 +34,6 @@ class SessionDBAuth (SessionExpAuth):
         except Exception:
             return None
         
-        user_sessions = user_session[0]
         if not user_sessions or len(user_sessions) == 0:
             return None
         user_session = user_sessions[0]
