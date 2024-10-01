@@ -4,7 +4,7 @@ Main file
 """
 
 import flask
-from flask import jsonify, request
+from flask import jsonify, request, redirect
 from auth import Auth
 
 
@@ -48,9 +48,13 @@ def logout() -> str:
     """
     DELETE /sessions
     """
-    session_id = request.cookies.get("session_id")
-    user = AUTH.get_user_from_session_id(session_id)
-    AUTH.destroy_session(user.id)
+    try:
+        session_id = request.cookies.get("session_id")
+        user = AUTH.get_user_from_session_id(session_id)
+        AUTH.destroy_session(user.id)
+        return redirect("/")
+    except Exception:
+        return jsonify({"message": "no user logged in"}), 403
 
 
 @app.route("/", methods=["GET"], strict_slashes=False)
