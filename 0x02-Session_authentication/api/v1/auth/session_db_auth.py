@@ -25,10 +25,19 @@ class SessionDBAuth (SessionExpAuth):
 
     def user_id_for_session_id(self, session_id=None):
         """ Returns a User ID based on a Session ID """
-        user_id = UserSession.search({"session_id": session_id})
-        if user_id:
-            return user_id
-        return None
+        if session_id is None:
+            return None
+        user_sessions = UserSession.search({'session_id': session_id})
+        if not user_sessions or len(user_sessions) == 0:
+            return None
+        user_session = user_sessions[0]
+        if self.session_duration <= 0:
+            return user_session.user_id
+        if user_session.created_at + \
+           datetime.timedelta(seconds=self.session_duration) \
+           < datetime.datetime.now():
+            return None
+        return user_session.user_id
 
     def destroy_session(self, request=None):
         """ Deletes the user session / logout """
