@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Auth class to manage the API authentication"""
 
-from api.v1.auth.session_auth import SessionAuth
+from api.v1.auth.session_exp_auth import SessionExpAuth
 from typing import TypeVar
 from uuid import uuid4
 from os import getenv
@@ -12,7 +12,7 @@ import datetime
 SESSION_DURATION = getenv('SESSION_DURATION')
 
 
-class SessionDBAuth (SessionAuth):
+class SessionDBAuth (SessionExpAuth):
     """ Session DB Auth class """
     def create_session(self, user_id=None):
         """ Creates a Session ID for a user_id """
