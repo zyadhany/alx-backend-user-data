@@ -27,6 +27,21 @@ def register_user() -> str:
         return jsonify({"message": "email already registered"}), 400
 
 
+def login() -> str:
+    """
+    POST /sessions
+    """
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    if AUTH.valid_login(email, password):
+        session_id = AUTH.create_session(email)
+        reponse = jsonify({"email": email, "message": "logged in"})
+        reponse.set_cookie("session_id", session_id)
+        return reponse
+    return jsonify({"message": "wrong password"}), 401
+
+
 @app.route("/", methods=["GET"], strict_slashes=False)
 def index() -> str:
     """
