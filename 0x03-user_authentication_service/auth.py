@@ -5,11 +5,11 @@ Auth module
 
 from db import DB
 from user import User
+import bcrypt
 
 
 def _hash_password(password: str) -> str:
     """Returns a hashed password"""
-    import bcrypt
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 
@@ -34,6 +34,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(email=email)
-            return user.hashed_password == _hash_password(password)
+            return bcrypt.checkpw(password.encode('utf-8'),
+                                  user.hashed_password)
         except Exception:
             return False
