@@ -2,11 +2,13 @@
 """
 Main file
 """
+import logging
 
 import flask
 from flask import jsonify, request, redirect, abort
 from auth import Auth
 
+logging.disable(logging.WARNING)
 
 AUTH = Auth()
 app = flask.Flask(__name__)
