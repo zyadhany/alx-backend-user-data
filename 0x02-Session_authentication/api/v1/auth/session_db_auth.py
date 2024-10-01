@@ -34,7 +34,7 @@ class SessionDBAuth (SessionExpAuth):
         except Exception:
             return None
         
-        if not user_sessions or len(user_sessions) == 0:
+        if user_sessions is None or len(user_sessions) == 0:
             return None
         user_session = user_sessions[0]
         if self.session_duration <= 0:
